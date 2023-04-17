@@ -53,7 +53,6 @@ export interface Database {
           email: string
           id: number
           name: string
-          password: string
         }
         Insert: {
           account_id?: number | null
@@ -61,7 +60,6 @@ export interface Database {
           email: string
           id?: number
           name: string
-          password: string
         }
         Update: {
           account_id?: number | null
@@ -69,7 +67,6 @@ export interface Database {
           email?: string
           id?: number
           name?: string
-          password?: string
         }
       }
     }
