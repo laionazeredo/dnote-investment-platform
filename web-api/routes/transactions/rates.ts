@@ -27,7 +27,7 @@ export async function GET(req: Request) {
     .eq("account_id", accountData[0].account_id);
 
   if (ratesError) {
-    return Response.json({ data: null, error: ratesError });
+    return Response.json({ data: null, error: ratesError }, { status: 500 });
   }
 
   return Response.json({

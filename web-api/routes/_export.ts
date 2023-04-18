@@ -7,7 +7,8 @@ import * as $2 from "./transactions/index.ts";
 import * as $3 from "./transactions/investment.ts";
 import * as $4 from "./transactions/rates.ts";
 import * as $5 from "./transactions/withdraw.ts";
-import * as $6 from "./users/$id.ts";
+import * as $6 from "./operations/close-month.ts";
+import * as $7 from "./users/$id.ts";
 
 export default {
   "/": $0,
@@ -16,5 +17,6 @@ export default {
   "/transactions/investment": $3,
   "/transactions/rates": $4,
   "/transactions/withdraw": $5,
-  "/users/:id": $6,
+  "/operations/close-month": $6,
+  "/users/:id": $7,
 };
