@@ -34,7 +34,7 @@ export async function POST(req: Request) {
   }
 
   // If yes, return error
-  if (userData.length === 0) {
+  if (userData.length !== 0) {
     return Response.json({ data: null, error: "User already exists" }, {
       status: 400,
     });
