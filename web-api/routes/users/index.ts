@@ -22,12 +22,12 @@ export async function GET(_req: Request) {
 
 // POST "/users"
 export async function POST(req: Request) {
-  const json = await req.json();
+  const body = await req.json();
   // Checks if user already exists
   const { data: userData, error: userError } = await supabase
     .from("Users")
     .select("email")
-    .eq("email", json.email);
+    .eq("email", body.email);
 
   if (userError !== null) {
     return Response.json({ data: null, error: userError }, { status: 500 });
@@ -42,8 +42,8 @@ export async function POST(req: Request) {
 
   // If not, create user on auth scope
   const { data: authData, error: authError } = await supabase.auth.signUp({
-    email: json.email,
-    password: json.password,
+    email: body.email,
+    password: body.password,
   });
 
   if (authError !== null) {
@@ -65,8 +65,8 @@ export async function POST(req: Request) {
     .from("Users")
     .insert([
       {
-        email: json.email,
-        name: json.name,
+        email: body.email,
+        name: body.name,
         auth_id: authData.user.id,
         account_id: accountData[0].id,
       },
