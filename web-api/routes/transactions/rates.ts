@@ -33,8 +33,8 @@ export async function GET(req: Request) {
   return Response.json({
     data: {
       account_id: accountData[0].account_id,
-      rate: ratesData[0].monthly_rate,
-      updateRegime: "monthly",
+      rate: ratesData[0].yearly_rate,
+      updateRegime: "yearly",
     },
     error: ratesError,
   }, { status: 200 });
