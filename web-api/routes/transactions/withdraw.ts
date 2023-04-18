@@ -8,9 +8,9 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
-  if (amountInDollar >= 0) {
+  if (amountInDollar <= 0) {
     return Response.json(
-      { data: null, error: "Amount must be less than 0" },
+      { data: null, error: "Amount must be greater than 0" },
       { status: 400 },
     );
   }
