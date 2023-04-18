@@ -1,26 +1,21 @@
 import supabase from "../../infra/supabase/main.ts";
 
-export type User = {
-  account_id: number | null;
-  created_at: string | null;
-  email: string;
-  id: number;
-  name: string;
-  password: string;
-};
-
 // GET "/users"
 export async function GET(_req: Request) {
   const { data, error } = await supabase
     .from("Users")
     .select()
     .limit(100);
-  if (error !== null) return Response.json({ data: null, error }, { status: 400 });
-  if (data === null) {
-    return Response.json({ data: null, error: "No data found" }, { status: 404 });
+  if (error !== null) {
+    return Response.json({ data: null, error }, { status: 400 });
+  }
+  if (data.length === 0) {
+    return Response.json({ data: null, error: "No data found" }, {
+      status: 404,
+    });
   }
 
-  return Response.json({data: {users: data}, error}, { status: 200});
+  return Response.json({ data: { users: data }, error }, { status: 200 });
 }
 
 // TODO rollback operation if one fails
@@ -34,11 +29,15 @@ export async function POST(req: Request) {
     .select("email")
     .eq("email", json.email);
 
-  if (userError !== null) return Response.json({ data: null, error: userError }, { status: 500 });
+  if (userError !== null) {
+    return Response.json({ data: null, error: userError }, { status: 500 });
+  }
 
   // If yes, return error
-  if (!userData) {
-    return Response.json({ data: null, error: "User already exists" }, { status: 400 });
+  if (userData.length === 0) {
+    return Response.json({ data: null, error: "User already exists" }, {
+      status: 400,
+    });
   }
 
   // If not, create user on auth scope
@@ -78,7 +77,10 @@ export async function POST(req: Request) {
     return Response.json({ createdUserError }, { status: 500 });
   }
 
-  return Response.json({ data: {user: createdUserData}, error: createdUserError}, {
+  return Response.json({
+    data: { user: createdUserData },
+    error: createdUserError,
+  }, {
     status: 200,
   });
 }
