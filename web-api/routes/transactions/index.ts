@@ -72,7 +72,7 @@ function calculateBalance(transactions: Transaction[]) {
     totalInvested: totalInvested / 100,
     totalWithdrawn: totalWithdrawn / 100,
     totalInterest: totalInterest / 100,
-    totalOperations: transactions.length,
+    totalTransactions: transactions.length,
     balance: (totalInvested + totalInterest - totalWithdrawn) / 100,
   };
 }
