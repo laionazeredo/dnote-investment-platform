@@ -37,17 +37,21 @@ export async function calculateInterests(
     status: transactionStatus,
   } = await findTransactions(userId);
 
+  if (transactionError) {
+    return { data: null, error: transactionError, status: transactionStatus };
+  }
+
   // Filter transactions by month and year
   const filteredTransactions = transactionData.filter(
     (transaction: Transaction) => {
       const transactionDate = new Date(transaction.created_at);
-      return transactionDate.getMonth() === month &&
-        transactionDate.getFullYear() === year;
+      if (
+        transactionDate.getMonth() + 1 === month &&
+        transactionDate.getFullYear() === year
+      ) return transaction; // .getMonth() returns 0-11
     },
   );
 
-  console.log("transactionData", transactionData);
-  console.log("filteredTransactions", filteredTransactions);
 
   return { data: accountData[0].account_id, error: null, status: 200 };
   // Calculate the total amount of the transactions

@@ -18,6 +18,7 @@ export async function closeMonth(userId: number, month: number, year: number) {
     error: interestsInsertError,
     status: interestsInsertStatus,
   } = await supabase.from("Interests").insert(interestsData);
+
   if (interestsInsertError) {
     return Response.json({ data: null, error: interestsInsertError }, {
       status: interestsInsertStatus,
