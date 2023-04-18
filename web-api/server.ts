@@ -1,12 +1,8 @@
 import { serve } from "aleph/server";
 import denoDeploy from "aleph/plugins/deploy";
 import modules from "./routes/_export.ts";
-
-declare global {
-  interface Context {
-    foo: string;
-  }
-}
+import "https://deno.land/x/dotenv/load.ts";
+import cors from "cors";
 
 serve({
   plugins: [
@@ -15,10 +11,17 @@ serve({
   port: 3000,
   middlewares: [
     {
-      name: "foo",
-      fetch: (_req, ctx) => {
-        ctx.foo = "bar";
-        return ctx.next();
+      name: "cors",
+      async fetch(request, { next }) {
+        const options = {
+          origin: "*",
+          methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+          preflightContinue: false,
+          optionsSuccessStatus: 204,
+        };
+        // next() will invoke a respective route function
+        const response = await next();
+        return cors(request, response, options);
       },
     },
   ],
