@@ -6,6 +6,7 @@ import * as $1 from "./users/index.ts";
 import * as $2 from "./transactions/investment.ts";
 import * as $3 from "./users/$id.ts";
 
+
 export default {
   "/": $0,
   "/users/index": $1,
