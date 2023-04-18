@@ -17,7 +17,19 @@
       "@supabase/postgrest-js": "https://esm.sh/v115/@supabase/postgrest-js@1.5.0",
       "@supabase/realtime-js": "https://esm.sh/v115/@supabase/realtime-js@2.7.2",
       "@supabase/storage-js": "https://esm.sh/v115/@supabase/storage-js@2.5.1",
-      "cross-fetch": "https://esm.sh/v115/cross-fetch@3.1.5"
+      "bytes": "https://esm.sh/v115/bytes@3.1.2",
+      "content-type": "https://esm.sh/v115/content-type@1.0.5",
+      "cross-fetch": "https://esm.sh/v115/cross-fetch@3.1.5",
+      "debug": "https://esm.sh/v115/debug@2.6.9",
+      "depd": "https://esm.sh/v115/depd@2.0.0",
+      "destroy": "https://esm.sh/v115/destroy@1.2.0",
+      "http-errors": "https://esm.sh/v115/http-errors@2.0.0",
+      "iconv-lite": "https://esm.sh/v115/iconv-lite@0.4.24",
+      "on-finished": "https://esm.sh/v115/on-finished@2.4.1",
+      "qs": "https://esm.sh/v115/qs@6.11.0",
+      "raw-body": "https://esm.sh/v115/raw-body@2.5.2",
+      "type-is": "https://esm.sh/v115/type-is@1.6.18",
+      "unpipe": "https://esm.sh/v115/unpipe@1.0.0"
     }
   }
 }
