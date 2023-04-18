@@ -1,30 +1,86 @@
-export type User = {
-  uid: number;
-  name: string;
-  createdAt: string;
-};
-
-export const users: User[] = [
-  { uid: 1, name: "john doe", createdAt: "2020-01-01T00:00:00.000Z" },
-  { uid: 2, name: "mike johnson", createdAt: "2020-01-02T00:00:00.000Z" },
-  { uid: 3, name: "mary jane", createdAt: "2020-01-03T00:00:00.000Z" },
-  { uid: 4, name: "larry wall", createdAt: "2020-01-04T00:00:00.000Z" },
-];
+import supabase from "../../infra/supabase/main.ts";
 
 // GET "/users"
-export function GET(req: Request) {
-  const url = new URL(req.url);
-  return Response.json(users.map((user) => ({ ...user, url: `${url.origin}/users/${user.uid}` })));
+export async function GET(_req: Request) {
+  const { data, error } = await supabase
+    .from("Users")
+    .select()
+    .limit(100);
+  if (error !== null) {
+    return Response.json({ data: null, error }, { status: 400 });
+  }
+  if (data.length === 0) {
+    return Response.json({ data: null, error: "No data found" }, {
+      status: 404,
+    });
+  }
+
+  return Response.json({ data: { users: data }, error }, { status: 200 });
 }
+
+// TODO rollback operation if one fails
 
 // POST "/users"
 export async function POST(req: Request) {
-  const data = await req.formData();
-  const name = data.get("name");
-  if (typeof name !== "string" || name.length === 0) {
-    return Response.json({ error: { message: "invalid name", code: "invalidName" } }, { status: 400 });
+  const json = await req.json();
+  // Checks if user already exists
+  const { data: userData, error: userError } = await supabase
+    .from("Users")
+    .select("email")
+    .eq("email", json.email);
+
+  if (userError !== null) {
+    return Response.json({ data: null, error: userError }, { status: 500 });
   }
-  const user: User = { uid: users.length + 1, name, createdAt: new Date().toISOString() };
-  users.push(user);
-  return Response.json(user);
+
+  // If yes, return error
+  if (userData.length === 0) {
+    return Response.json({ data: null, error: "User already exists" }, {
+      status: 400,
+    });
+  }
+
+  // If not, create user on auth scope
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email: json.email,
+    password: json.password,
+  });
+
+  if (authError !== null) {
+    return Response.json({ data: null, error: authError }, { status: 500 });
+  }
+
+  // Create account on public scope
+  const { data: accountData, error: accountError } = await supabase
+    .from("Accounts")
+    .insert({})
+    .select();
+
+  if (accountError !== null) {
+    return Response.json({ data: null, error: accountError }, { status: 500 });
+  }
+
+  // Create user at public scope
+  const { data: createdUserData, error: createdUserError } = await supabase
+    .from("Users")
+    .insert([
+      {
+        email: json.email,
+        name: json.name,
+        auth_id: authData.user.id,
+        account_id: accountData[0].id,
+      },
+    ])
+    .select();
+
+  if (createdUserError !== null) {
+    return Response.json({ createdUserError }, { status: 500 });
+  }
+
+  return Response.json({
+    data: { user: createdUserData },
+    error: createdUserError,
+  }, {
+    status: 200,
+  });
 }

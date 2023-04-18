@@ -3,7 +3,12 @@
     "all:dev": "deno task user-portal:dev & deno task web-api:dev",
     "user-portal:deploy": "deployctl deploy --project=dnote-user-portal ./user-portal/server.ts",
     "user-portal:dev": "cd user-portal; deno task dev",
+    "user-portal:add": "cd user-portal; deno task esm:add",
+    "user-portal:remove": "cd user-portal; deno task esm:remove",
     "web-api:deploy": "deployctl deploy --project=dnote-web-api ./web-api/server.ts",
     "web-api:dev": "cd web-api; deno task dev",
+    "web-api:add": "cd web-api; deno task esm:add",
+    "web-api:remove": "cd web-api; deno task esm:remove",
+    "web-api:supabase:genarate-types": "cd web-api; rm infra/supabase/database.types.ts; touch infra/supabase/database.types.ts;npx supabase gen types typescript --project-id 'wsucrybezkhzknwwwelt' --schema public >> infra/supabase/database.types.ts"
   }
 }
