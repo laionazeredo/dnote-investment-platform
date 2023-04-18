@@ -6,7 +6,9 @@ export function GET(_req: Request, ctx: Context) {
   if (user) {
     return Response.json(user);
   }
-  return Response.json({ error: { message: "user not found", code: "userNotFound" } }, { status: 404 });
+  return Response.json({
+    error: { message: "user not found", code: "userNotFound" },
+  }, { status: 404 });
 }
 
 // PATCH "/users/:uid"
@@ -16,11 +18,14 @@ export async function PATCH(req: Request, ctx: Context) {
     const data = await req.formData();
     const name = data.get("name");
     if (typeof name !== "string" || name.length === 0) {
-      return Response.json({ error: { message: "invalid name", code: "invalidName" } }, { status: 400 });
+      return Response.json({
+        error: { message: "invalid name", code: "invalidName" },
+      }, { status: 400 });
     }
     user.name = name;
     return Response.json(user);
   }
-  return Response.json({ error: { message: "user not found", code: "userNotFound" } }, { status: 404 });
+  return Response.json({
+    error: { message: "user not found", code: "userNotFound" },
+  }, { status: 404 });
 }
-
