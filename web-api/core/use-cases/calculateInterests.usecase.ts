@@ -52,6 +52,7 @@ export async function calculateInterests(
     },
   );
 
+  console.log("days in month: ", daysInMonth(month, year));
 
   return { data: accountData[0].account_id, error: null, status: 200 };
   // Calculate the total amount of the transactions
@@ -59,4 +60,8 @@ export async function calculateInterests(
   // Calculate the interests
 
   // Return the interests
+}
+
+function daysInMonth(month, year) {
+  return new Date(year, month, 0).getDate();
 }
