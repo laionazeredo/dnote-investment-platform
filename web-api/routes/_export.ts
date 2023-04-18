@@ -3,10 +3,12 @@
 
 import * as $0 from "./index.ts";
 import * as $1 from "./users/index.ts";
-import * as $2 from "./users/$id.ts";
+import * as $2 from "./transactions/investment.ts";
+import * as $3 from "./users/$id.ts";
 
 export default {
   "/": $0,
   "/users/index": $1,
-  "/users/:id": $2,
+  "/transactions/investment": $2,
+  "/users/:id": $3,
 };
