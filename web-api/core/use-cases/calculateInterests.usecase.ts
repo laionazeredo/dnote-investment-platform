@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-unused-vars
 import supabase from "../../infra/supabase/main.ts";
 import { findTransactions } from "./findTransactions.usecase.ts";
 import { Transaction } from "./transactions.interface.ts";
@@ -33,10 +32,9 @@ export async function calculateInterests(
     return { data: null, error: "Rate not found", status: 400 };
   }
 
-  console.log("ratesData: ", ratesData);
-
-  const PRO_RATA_RATE = parseFloat((ratesData[0].rate / 100 / 365).toFixed(2)); // Transformes integer rate to daily proportional rate in decimals
-  console.log("PRO_RATA_RATE: ", PRO_RATA_RATE);
+  const PRO_RATA_RATE = parseFloat(
+    (ratesData[0].yearly_rate / 100 / 365).toFixed(10),
+  ); // Transformes integer rate to daily proportional rate in decimals fixed to 10 decimals
 
   // Find all transactions of the user
   const {
@@ -52,23 +50,51 @@ export async function calculateInterests(
   // Filter transactions by month and year
   const filteredTransactions = transactionData.filter(
     (transaction: Transaction) => {
-      console.log("transaction: ", transaction);
       const transactionDate = new Date(transaction.created_at);
       if (
-        transactionDate.getMonth() + 1 === month &&
-        transactionDate.getFullYear() === year
+        transactionDate.getUTCMonth() + 1 === month &&
+        transactionDate.getUTCFullYear() === year
       ) return transaction; // .getMonth() returns 0-11
     },
   );
 
-  return { data: accountData[0].account_id, error: null, status: 200 };
-  // Calculate the total amount of the transactions
-
   // Calculate the interests
+  const transactionsInterests = [];
+
+  for (const transaction of filteredTransactions) {
+    const transactionDate = new Date(transaction.created_at);
+    const transactionDays = new Date(year, month, 0).getUTCDate() -
+      transactionDate.getUTCDate() + 1; // Get the number of days of the month and subtract the days of the transaction
+
+    const amount = transaction.transaction_type === "withdraw"
+      ? transaction.amount * -1
+      : transaction.amount; // If the transaction is a withdraw, the amount is negative
+
+    const transactionInterest = amount * PRO_RATA_RATE *
+      transactionDays;
+    transactionsInterests.push({
+      transaction_id: transaction.id,
+      interest: transactionInterest,
+    });
+  }
 
   // Return the interests
-}
+  const interests = transactionsInterests.reduce((acc, curr) => {
+    return acc + curr.interest;
+  }, 0);
 
-function daysInMonth(month, year) {
-  return new Date(year, month, 0).getDate();
+  console.log(
+    `Interests from account ${
+      accountData[0].account_id
+    } for month: ${month} and year: ${year}: `,
+    parseFloat((interests / 100).toFixed(2)),
+  );
+  return {
+    data: {
+      account: accountData[0].account_id,
+      interests: Math.round(interests),
+    },
+    error: null,
+    status: 200,
+  };
 }
