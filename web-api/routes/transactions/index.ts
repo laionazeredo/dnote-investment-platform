@@ -4,7 +4,8 @@ import { findTransactions } from "../../core/use-cases/findTransactions.usecase.
 import supabase from "../../infra/supabase/main.ts";
 
 export async function GET(req: Request) {
-  const userId = req.url.split("?")[1].split("=")[1];
+  const url = new URL(req.url);
+  const userId = url.searchParams.get("userid");
   if (!userId) {
     return Response.json({ data: null, error: "Invalid user id" }, {
       status: 400,
@@ -44,7 +45,7 @@ export async function GET(req: Request) {
   const cleanedTransactionData = cleanTransactionData(transactionData);
 
   return Response.json({
-    data: { balance: balance, transactions: cleanedTransactionData },
+    data: {accountId: userData[0].account_id,  balance: balance, transactions: cleanedTransactionData },
     error: transactionError,
   }, { status: 200 });
 }
