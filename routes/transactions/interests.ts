@@ -72,7 +72,7 @@ export async function GET(req: Request) {
       referceDate: `${month}/${year}`,
       totalInterestEarned: interestData.length === 0
         ? 0
-        : interestData[0].amount,
+        : interestData[0].amount / 100,
       transactions: cleanedTransactionData,
     },
     error: transactionError,
