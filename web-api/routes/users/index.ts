@@ -60,6 +60,18 @@ export async function POST(req: Request) {
     return Response.json({ data: null, error: accountError }, { status: 500 });
   }
 
+  // Create rate on public scope
+  const { _data, error: ratesError } = await supabase
+    .from("Rates")
+    .insert({
+      account_id: accountData[0].id,
+      yearly_rate: body.rate || 2,
+    });
+
+  if (ratesError !== null) {
+    return Response.json({ data: null, error: ratesError }, { status: 500 });
+  }
+
   // Create user at public scope
   const { data: createdUserData, error: createdUserError } = await supabase
     .from("Users")
@@ -84,3 +96,4 @@ export async function POST(req: Request) {
     status: 200,
   });
 }
+

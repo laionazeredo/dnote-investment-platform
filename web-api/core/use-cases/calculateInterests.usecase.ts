@@ -29,6 +29,14 @@ export async function calculateInterests(
   if (ratesError) {
     return { data: null, error: ratesError, status: 500 };
   }
+  if (ratesData.length === 0) {
+    return { data: null, error: "Rate not found", status: 400 };
+  }
+
+  console.log("ratesData: ", ratesData);
+
+  const PRO_RATA_RATE = parseFloat((ratesData[0].rate / 100 / 365).toFixed(2)); // Transformes integer rate to daily proportional rate in decimals
+  console.log("PRO_RATA_RATE: ", PRO_RATA_RATE);
 
   // Find all transactions of the user
   const {
@@ -44,6 +52,7 @@ export async function calculateInterests(
   // Filter transactions by month and year
   const filteredTransactions = transactionData.filter(
     (transaction: Transaction) => {
+      console.log("transaction: ", transaction);
       const transactionDate = new Date(transaction.created_at);
       if (
         transactionDate.getMonth() + 1 === month &&
@@ -51,8 +60,6 @@ export async function calculateInterests(
       ) return transaction; // .getMonth() returns 0-11
     },
   );
-
-  console.log("days in month: ", daysInMonth(month, year));
 
   return { data: accountData[0].account_id, error: null, status: 200 };
   // Calculate the total amount of the transactions
