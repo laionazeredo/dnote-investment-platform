@@ -38,9 +38,11 @@ Here we can explore how to run all the test cases defined in the challenge.
 
 #### Scenario
 
-1. Investor creates their first investment for $10.000 on January 1st. Expected
-   result: Accrues $16.99 of interest on January, 31st. (31 days * 2% / 365 days
-   in a year * $10.000 balance)
+**Investor creates their first investment for $10.000 on January 1st. Expected
+result: Accrues $16.99 of interest on January, 31st. (31 days * 2% / 365 days in
+a year * $10.000 balance)**
+
+---
 
 To test this scenario, you need to follow this steps:
 
@@ -54,14 +56,13 @@ To test this scenario, you need to follow this steps:
   "name": {the name of the user},
   "password": {the password of the user},
   "email":  {the email of the user}
-  
 }
 ```
 
 - You need to register, after the response, the `id` and `account_id` of the
   created user. You will need it soon.
-- The you need to got to `localhost:3000/transactions/investment` and run a POST
-  request with a the following body:
+- Then you need to got to `localhost:3000/transactions/investment` and run a
+  POST request with a the following body:
 
 ```
 {
@@ -95,25 +96,169 @@ userid={user id of the user}
 month=1
 year=2023
 ```
+
 - On the response, you will see the property `totalInterestEarned` with the
-  value of the interest accrued for your user on the month ($ 16.99).
-  - Below you can see the list of `transactions` executed by the user during the month.
+  value of the interest accrued for your user on the month (**$ 16.99**).
+- Below you can see the list of `transactions` executed by the user during the
+  month.
 
 ### Test case 2
 
 #### Scenario
 
-Investor creates their first investment for $10.000 on January 1st. On January
-5, they add $5.000. Expected result: Accrues $24.38 of interest on January,
-31st.
+**Investor creates their first investment for $10.000 on January 1st. On January
+5, they add $5.000. Expected result: Accrues $24.38 of interest on
+January,31st.**
+
+---
+
+To test this scenario, you need to follow this steps:
+
+- Run the project
+- Go to you preferred API client
+- First, create a new user. You can do this by sending a POST request to
+  `http://localhost:3000/users` with a body like this:
+
+```
+{
+  "name": {the name of the user},
+  "password": {the password of the user},
+  "email":  {the email of the user}
+}
+```
+
+- You need to register, after the response, the `id` and `account_id` of the
+  created user. You will need it soon.
+- Then you need to got to `localhost:3000/transactions/investment` and run a
+  POST request with a the following body:
+
+```
+{
+  "amountInDollar": 10000, 
+  "transactionDate": "2023-01-01T00:00:00.000Z",
+  "account": {account id of the user},
+}
+```
+
+- The you need to got to `localhost:3000/transactions/investment` again and run
+  a POST request with a the following body to make a new deposit:
+
+```
+{
+  "amountInDollar": 5000, 
+  "transactionDate": "2023-01-05T00:00:00.000Z",
+  "account": {account id of the user},
+}
+```
+
+- Now, you need to simulate the end of the month. To do this, you need to go to
+  `localhost:3000/operatioons/close-month` and run a POST request with a the
+  following body:
+
+```
+{
+  "month": 1, 
+  "year": 2023,
+  "users": [{user id of the user}]
+}
+```
+
+- This will simulate the end of the month and will calculate the interest
+  accrued for your user. You can run the same reques withou the `users` property
+  to simulate the end of the month for all users.
+- Finnaly, you can check the interest accrued for your user by running a GET
+  request to `localhost:3000/transactions/interests` with a the following URL
+  parameters:
+
+```
+userid={user id of the user}
+month=1
+year=2023
+```
+
+- On the response, you will see the property `totalInterestEarned` with the
+  value of the interest accrued for your user on the month (**$ 24.38**).
+- Below you can see the list of `transactions` executed by the user during the
+  month.
 
 ### Test case 3
 
 #### Scenario
 
-Investor creates their first investment for $10.000 on January 1st. On January
+**Investor creates their first investment for $10.000 on January 1st. On January
 5, they withdraw $5.000. Expected result: Accrues $9.59 of interest on January,
-31st.
+31st.**
+
+---
+
+To test this scenario, you need to follow this steps:
+
+- Run the project
+- Go to you preferred API client
+- First, create a new user. You can do this by sending a POST request to
+  `http://localhost:3000/users` with a body like this:
+
+```
+{
+  "name": {the name of the user},
+  "password": {the password of the user},
+  "email":  {the email of the user}
+}
+```
+
+- You need to register, after the response, the `id` and `account_id` of the
+  created user. You will need it soon.
+- Then you need to got to `localhost:3000/transactions/investment` and run a
+  POST request with a the following body:
+
+```
+{
+  "amountInDollar": 10000, 
+  "transactionDate": "2023-01-01T00:00:00.000Z",
+  "account": {account id of the user},
+}
+```
+
+- The you need to got to `localhost:3000/transactions/withdraw` again and run a
+  POST request with a the following body to make a withdraw:
+
+```
+{
+  "amountInDollar": 5000, 
+  "transactionDate": "2023-01-05T00:00:00.000Z",
+  "account": {account id of the user},
+}
+```
+
+- Now, you need to simulate the end of the month. To do this, you need to go to
+  `localhost:3000/operatioons/close-month` and run a POST request with a the
+  following body:
+
+```
+{
+  "month": 1, 
+  "year": 2023,
+  "users": [{user id of the user}]
+}
+```
+
+- This will simulate the end of the month and will calculate the interest
+  accrued for your user. You can run the same reques withou the `users` property
+  to simulate the end of the month for all users.
+- Finnaly, you can check the interest accrued for your user by running a GET
+  request to `localhost:3000/transactions/interests` with a the following URL
+  parameters:
+
+```
+userid={user id of the user}
+month=1
+year=2023
+```
+
+- On the response, you will see the property `totalInterestEarned` with the
+  value of the interest accrued for your user on the month (**$ 9.59**).
+- Below you can see the list of `transactions` executed by the user during the
+  month.
 
 ### Test case 4
 
