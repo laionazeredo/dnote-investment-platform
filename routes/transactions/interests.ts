@@ -39,18 +39,20 @@ export async function GET(req: Request) {
       status: transactionStatus,
     });
   }
+  console.log("transactionData: ", transactionData);
 
   // Filter transactions by month and year
   const filteredTransactions = transactionData.filter(
     (transaction: Transaction) => {
       const transactionDate = new Date(transaction.created_at);
       if (
-        transactionDate.getUTCMonth() + 1 === month &&
-        transactionDate.getUTCFullYear() === year
+        transactionDate.getUTCMonth() + 1 === Number(month) &&
+        transactionDate.getUTCFullYear() === Number(year)
       ) return transaction; // .getMonth() returns 0-11
     },
   );
 
+  console.log("filteredTransactions: ", filteredTransactions);
   const { data: interestData, error: interestError } = await supabase
     .from("Interests")
     .select("amount")
@@ -72,7 +74,7 @@ export async function GET(req: Request) {
       referceDate: `${month}/${year}`,
       totalInterestEarned: interestData.length === 0
         ? 0
-        : interestData[0].amount,
+        : interestData[0].amount / 100,
       transactions: cleanedTransactionData,
     },
     error: transactionError,
