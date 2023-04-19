@@ -45,7 +45,11 @@ export async function GET(req: Request) {
   const cleanedTransactionData = cleanTransactionData(transactionData);
 
   return Response.json({
-    data: {accountId: userData[0].account_id,  balance: balance, transactions: cleanedTransactionData },
+    data: {
+      accountId: userData[0].account_id,
+      balance: balance,
+      transactions: cleanedTransactionData,
+    },
     error: transactionError,
   }, { status: 200 });
 }
