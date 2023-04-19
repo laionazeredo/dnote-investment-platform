@@ -1,0 +1,7 @@
+cnote-challenge-docs
+.env
+.vscode
+README.md
+.dockerignore
+.git
+DOCKERFILE
