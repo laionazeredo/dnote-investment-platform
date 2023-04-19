@@ -1,9 +1,0 @@
-{
-  "tasks": {
-    "all:dev": "deno task user-portal:dev & deno task web-api:dev",
-    "user-portal:deploy": "deployctl deploy --project=dnote-user-portal ./user-portal/server.ts",
-    "user-portal:dev": "cd user-portal; deno task dev",
-    "web-api:deploy": "deployctl deploy --project=dnote-web-api ./web-api/server.ts",
-    "web-api:dev": "cd web-api; deno task dev",
-  }
-}

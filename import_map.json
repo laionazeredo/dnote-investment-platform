@@ -1,0 +1,36 @@
+{
+  "imports": {
+    "~/": "./",
+    "std/": "https://deno.land/std@0.180.0/",
+    "aleph/": "https://deno.land/x/aleph@1.0.0-beta.43/",
+    "aleph/plugins/deploy": "https://deno.land/x/aleph@1.0.0-beta.43/plugins/deploy.ts",
+    "aleph/dev": "https://deno.land/x/aleph@1.0.0-beta.43/server/dev.ts",
+    "aleph/server": "https://deno.land/x/aleph@1.0.0-beta.43/server/mod.ts",
+    "@supabase/supabase-js": "https://esm.sh/v115/*@supabase/supabase-js@2.20.0",
+    "dotenv": "https://esm.sh/v115/dotenv@16.0.3",
+    "dotenv/": "https://esm.sh/v115/dotenv@16.0.3/",
+    "cors": "https://deno.land/x/edge_cors@0.2.1/src/cors.ts"
+  },
+  "scopes": {
+    "https://esm.sh/v115/": {
+      "@supabase/functions-js": "https://esm.sh/v115/@supabase/functions-js@2.1.1",
+      "@supabase/gotrue-js": "https://esm.sh/v115/@supabase/gotrue-js@2.22.3",
+      "@supabase/postgrest-js": "https://esm.sh/v115/@supabase/postgrest-js@1.5.0",
+      "@supabase/realtime-js": "https://esm.sh/v115/@supabase/realtime-js@2.7.2",
+      "@supabase/storage-js": "https://esm.sh/v115/@supabase/storage-js@2.5.1",
+      "bytes": "https://esm.sh/v115/bytes@3.1.2",
+      "content-type": "https://esm.sh/v115/content-type@1.0.5",
+      "cross-fetch": "https://esm.sh/v115/cross-fetch@3.1.5",
+      "debug": "https://esm.sh/v115/debug@2.6.9",
+      "depd": "https://esm.sh/v115/depd@2.0.0",
+      "destroy": "https://esm.sh/v115/destroy@1.2.0",
+      "http-errors": "https://esm.sh/v115/http-errors@2.0.0",
+      "iconv-lite": "https://esm.sh/v115/iconv-lite@0.4.24",
+      "on-finished": "https://esm.sh/v115/on-finished@2.4.1",
+      "qs": "https://esm.sh/v115/qs@6.11.0",
+      "raw-body": "https://esm.sh/v115/raw-body@2.5.2",
+      "type-is": "https://esm.sh/v115/type-is@1.6.18",
+      "unpipe": "https://esm.sh/v115/unpipe@1.0.0"
+    }
+  }
+}
