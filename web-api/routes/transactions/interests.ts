@@ -1,11 +1,14 @@
 import { cleanTransactionData } from "../../core/use-cases/cleanTransactionData.usecase.ts";
-import { calculateBalance } from "../../core/use-cases/calculateBalance.usecase.ts";
 import { findTransactions } from "../../core/use-cases/findTransactions.usecase.ts";
+import { Transaction } from "../../core/use-cases/transactions.interface.ts";
 import supabase from "../../infra/supabase/main.ts";
-
 export async function GET(req: Request) {
   const url = new URL(req.url);
+
   const userId = url.searchParams.get("userid");
+  const month = url.searchParams.get("month");
+  const year = url.searchParams.get("year");
+
   if (!userId) {
     return Response.json({ data: null, error: "Invalid user id" }, {
       status: 400,
@@ -37,15 +40,41 @@ export async function GET(req: Request) {
     });
   }
 
-  const balance = await calculateBalance(
-    transactionData,
-    userData[0].account_id,
+  // Filter transactions by month and year
+  const filteredTransactions = transactionData.filter(
+    (transaction: Transaction) => {
+      const transactionDate = new Date(transaction.created_at);
+      if (
+        transactionDate.getUTCMonth() + 1 === month &&
+        transactionDate.getUTCFullYear() === year
+      ) return transaction; // .getMonth() returns 0-11
+    },
   );
 
-  const cleanedTransactionData = cleanTransactionData(transactionData);
+  const { data: interestData, error: interestError } = await supabase
+    .from("Interests")
+    .select("amount")
+    .eq("account_id", userData[0].account_id)
+    .eq("month", month)
+    .eq("year", year);
+
+  if (interestError) {
+    return Response.json({ data: null, error: interestError }, {
+      status: 500,
+    });
+  }
+
+  const cleanedTransactionData = cleanTransactionData(filteredTransactions);
 
   return Response.json({
-    data: {accountId: userData[0].account_id,  balance: balance, transactions: cleanedTransactionData },
+    data: {
+      accountId: userData[0].account_id,
+      referceDate: `${month}/${year}`,
+      totalInterestEarned: interestData.length === 0
+        ? 0
+        : interestData[0].amount,
+      transactions: cleanedTransactionData,
+    },
     error: transactionError,
   }, { status: 200 });
 }
