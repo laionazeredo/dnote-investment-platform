@@ -1,4 +1,5 @@
 ## About
+Simulates a simple web api tha allows users makes withdrawals and deposits in a investmet platform and calculates the interest accrued on the end of the month.
 
 ## Getting Started
 
