@@ -29,10 +29,17 @@ export async function calculateBalance(
     return { data: null, error: interestError, status: 500 };
   }
 
+  const interestsInDollars = interestData.map((interest) => {
+    return {
+      ...interest,
+      amount: interest.amount / 100,
+    };
+  });
+
   return {
     totalInvested: totalInvested / 100,
     totalWithdrawn: totalWithdrawn / 100,
-    interestsEarnedHistory: interestData,
+    interestsEarnedHistory: interestsInDollars,
     totalTransactions: transactions.length,
     balance: (totalInvested - totalWithdrawn) / 100,
   };
