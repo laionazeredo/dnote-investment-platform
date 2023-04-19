@@ -7,7 +7,7 @@ Simulates a simple web api tha allows users makes withdrawals and deposits in a 
 
 To run this project in your local environment, you need to follow this:
 
-- [Deno](https://deno.land/manual@v1.32.5/getting_started/installation).
+- Install [Deno](https://deno.land/manual@v1.32.5/getting_started/installation).
   Preferably the version 1.32.5.
 - Then you go to the root project folder and opens a terminal window
 - Then run `deno task dev`. It will start the project in development mode. The
