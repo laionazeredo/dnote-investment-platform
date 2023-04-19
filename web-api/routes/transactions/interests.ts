@@ -2,11 +2,12 @@ import { cleanTransactionData } from "../../core/use-cases/cleanTransactionData.
 import { findTransactions } from "../../core/use-cases/findTransactions.usecase.ts";
 import { Transaction } from "../../core/use-cases/transactions.interface.ts";
 import supabase from "../../infra/supabase/main.ts";
-export async function GET(_req: Request) {
-  const userId = 11; //req.url.split("?")[1].split("=")[1];
+export async function GET(req: Request) {
+  const url = new URL(req.url);
 
-  const month = 4; //Number(ctx.request.params.month);
-  const year = 2023; //Number(ctx.request.params.year);
+  const userId = url.searchParams.get("userid");
+  const month = url.searchParams.get("month");
+  const year = url.searchParams.get("year");
 
   if (!userId) {
     return Response.json({ data: null, error: "Invalid user id" }, {
