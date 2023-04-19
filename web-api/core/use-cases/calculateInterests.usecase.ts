@@ -2,28 +2,15 @@ import supabase from "../../infra/supabase/main.ts";
 import { findTransactions } from "./findTransactions.usecase.ts";
 import { Transaction } from "./transactions.interface.ts";
 export async function calculateInterests(
-  userId: number,
+  accountId: number,
   month: number,
   year: number,
 ) {
-  // Find the account id of the user
-  const { data: accountData, error: userError } = await supabase
-    .from("Users")
-    .select("account_id")
-    .eq("id", userId);
-
-  if (userError) {
-    return { data: null, error: userError, status: 500 };
-  }
-  if (accountData.length === 0) {
-    return { data: null, error: "User not found", status: 400 };
-  }
-
   // Find the rate of the account
   const { data: ratesData, error: ratesError } = await supabase
     .from("Rates")
     .select()
-    .eq("account_id", accountData[0].account_id);
+    .eq("account_id", accountId);
 
   if (ratesError) {
     return { data: null, error: ratesError, status: 500 };
@@ -36,12 +23,12 @@ export async function calculateInterests(
     (ratesData[0].yearly_rate / 100 / 365).toFixed(10),
   ); // Transformes integer rate to daily proportional rate in decimals fixed to 10 decimals
 
-  // Find all transactions of the user
+  // Find all transactions of the account
   const {
     data: transactionData,
     error: transactionError,
     status: transactionStatus,
-  } = await findTransactions(userId);
+  } = await findTransactions(accountId);
 
   if (transactionError) {
     return { data: null, error: transactionError, status: transactionStatus };
@@ -84,15 +71,13 @@ export async function calculateInterests(
   }, 0);
 
   console.log(
-    `Interests from account ${
-      accountData[0].account_id
-    } for month: ${month} and year: ${year}: `,
+    `Interests from account ${accountId} for month: ${month} and year: ${year}: `,
     parseFloat((interests / 100).toFixed(2)),
   );
   return {
     data: {
-      account: accountData[0].account_id,
-      interests: Math.round(interests),
+      account: accountId,
+      interests: interests < 0 ? 0 : Math.round(interests), // Needs to be validated if we can have negative interests
     },
     error: null,
     status: 200,

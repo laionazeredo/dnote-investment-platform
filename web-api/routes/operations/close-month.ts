@@ -45,5 +45,5 @@ async function closeMonthForAllUsers(month: number, year: number) {
     const monthClosed = await closeMonth(user.id, month, year);
     operationsExecuted.push(monthClosed);
   }
-  return { data: operationsExecuted, error: null, status: 200 };
+  return { interests: operationsExecuted, error: null, status: 200 };
 }
