@@ -1,0 +1,211 @@
+{
+    "info": {
+        "name": "dnote-wev-api",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "localhost:3000/operations/close-month",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "localhost:3000/operations/close-month",
+                    "path": [
+                        "operations",
+                        "close-month"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"month\": 1, \n  \"year\": 2023\n\n}"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/transactions/rates",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000/transactions/rates?userid=11",
+                    "query": [
+                        {
+                            "key": "userid",
+                            "value": "11"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "transactions",
+                        "rates"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/transactions",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000/transactions?userid=11",
+                    "query": [
+                        {
+                            "key": "userid",
+                            "value": "11"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "transactions"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/transactions/interests",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000/transactions/interests/?userid=12&month=4&year=2023",
+                    "query": [
+                        {
+                            "key": "userid",
+                            "value": "12"
+                        },
+                        {
+                            "key": "month",
+                            "value": "4"
+                        },
+                        {
+                            "key": "year",
+                            "value": "2023"
+                        }
+                    ],
+                    "variable": [],
+                    "path": [
+                        "transactions",
+                        "interests"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/transactions/withdraw",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "localhost:3000/transactions/withdraw",
+                    "path": [
+                        "transactions",
+                        "withdraw"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"amountInDollar\": 5000, \n  \"transactionDate\": \"2023-01-27T00:00:00.000Z\",\n  \"account\": 23\n  \n}"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/users",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "localhost:3000/users",
+                    "path": [
+                        "users"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"name\": \"Case 4\",\n  \"password\": \"123456\",\n  \"email\": \"c4@gmail.com\"\n  \n}"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/users/:id",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000/users/6",
+                    "path": [
+                        "users",
+                        "6"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000/users",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000/users",
+                    "path": [
+                        "users"
+                    ],
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        },
+        {
+            "name": "localhost:3000",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "localhost:3000",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000"
+                }
+            }
+        }
+    ]
+}
